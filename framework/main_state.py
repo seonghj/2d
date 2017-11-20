@@ -1,6 +1,7 @@
 import game_framework
 import title_state
 import player
+import time
 
 from pico2d import *
 
@@ -12,10 +13,10 @@ background = None
 bullet = None
 status_window = None
 icon = None
+dog = None
 background_width = 1000
 
 mouse_x, mouse_y = 0, 0
-player_damage = 0
 
 class Boy:
     PIXEL_PER_METER = (10.0 / 0.1)  # 10 pixel 10 cm
@@ -24,10 +25,9 @@ class Boy:
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-
     font = None
     Reach = 400
-    att, defend, max_hp, heal = 20, 3, 100, 1
+    att, defend, max_hp, heal = 20, 10, 100, 1
     hp = max_hp
     gold = 10000
 
@@ -55,6 +55,12 @@ class Boy:
                 self.hp = self.max_hp
             else:
                 self.hp += self.heal
+
+    def get_damage(self, Monster):
+        Monster.Pdamage_count += 1
+        if (Monster.x - 75 <= boy.x) and Monster.Pdamage_count >= 50:
+            boy.hp -= (Monster.att * 10) / boy.defend
+            Monster.Pdamage_count = 0
 
 
 
@@ -104,26 +110,40 @@ class Monster:
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-    hp = 50
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_ACTION = 9
+
+    font = None
 
     def __init__(self):
-        self.x, self.y = 750, 150
+        self.x, self.y = 750,150
+        self.hp = 50
+        self.defend = 90
+        self.att = 20
+        self.Pdamage_count = 100
         self.frame = 0
-        self.image = load_image('mon1.png')
+        self.image = load_image('Dog.png')
         self.dir = 1
         self.total_frames = 0.0
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 20)
 
-    def update(self, frame_time):
+    def __del__(self):
+        self.x = 850
+        self.__init__()
+
+    def update(self, frame_time, Boy, Bullet):
         self.total_frames += self.FRAMES_PER_ACTION * self.ACTION_PER_TIME * frame_time
         self.frame = int(self.total_frames) % 3
-        self.x -= 5
-        if self.hp < 0:
-            del(self)
+        if self.x - 75 > Boy.x:
+            self.x -= 5
+        if self.x + 20  > Bullet.x + 30 and self.x < Bullet.x + 30:
+            self.hp -= (Boy.att * 10) / self.defend
 
     def draw(self):
-        self.image.clip_draw(self.frame * 48, 0, 48, 60, self.x, self.y)
+        self.image.clip_draw(self.frame * 80, 0, 80, 75, self.x, self.y)
+        self.font.draw(self.x, self.y + 50, 'HP: %0.2f' % self.hp, (255, 0, 0))
 
 
 class Bullet:
@@ -134,14 +154,14 @@ class Bullet:
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
     def __init__(self):
-        self.x, self.y = 175, 150
+        self.x, self.y = Player_x + 50, 140
         self.image = load_image('bullet.png')
 
-    def update(self, frame_time, Reach):
+    def update(self, frame_time, Boy):
         distance = Bullet.RUN_SPEED_PPS * frame_time
         self.x += distance
-        if self.x > (Player_x + Reach):
-            self.x = Player_x + 75
+        if self.x > (Player_x + Boy.Reach):
+            self.x = Player_x + 50
 
     def draw(self):
         self.image.clip_draw(0, 0, 75, 75, self.x, self.y)
@@ -196,21 +216,23 @@ class Statuswindow:
 
 
 def enter():
-    global boy, background, bullet, status_window, icon
+    global boy, dog, background, bullet, status_window, icon
     boy = Boy()
     background = Background()
     status_window = Statuswindow()
     bullet = Bullet()
+    dog = Monster()
     icon = Upgrade_icon()
 
 
 def exit():
-    global boy, background, bullet, status_window, icon
+    global boy, background, bullet, status_window, icon, dog
     del(boy)
     del(background)
     del(status_window)
     del(bullet)
     del(icon)
+    del(dog)
 
 
 def pause():
@@ -247,14 +269,18 @@ def get_frame_time():
 
 
 def update():
-    global current_time, player_damage
+    global current_time
     frame_time = get_frame_time()
     boy.update(frame_time)
-    bullet.update(frame_time, boy.Reach)
+    bullet.update(frame_time, boy)
     background.update()
+    dog.update(frame_time, boy, bullet)
+    if dog.hp <= 0:
+        boy.gold += 200
+        dog.__del__()
+    boy.get_damage(dog)
     # player_damage = (boy.att * 10) / mon.defend
     delay(0.02)
-
 
 def draw():
     clear_canvas()
@@ -262,10 +288,6 @@ def draw():
     background.draw()
     icon.draw()
     boy.draw()
+    dog.draw()
     bullet.draw()
     update_canvas()
-
-
-
-
-
