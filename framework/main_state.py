@@ -1,5 +1,6 @@
 import game_framework
 import title_state
+import random
 import player
 import time
 
@@ -13,7 +14,8 @@ background = None
 bullet = None
 status_window = None
 icon = None
-dog = None
+dogs = None
+Mon_death_count = 0
 background_width = 1000
 
 mouse_x, mouse_y = 0, 0
@@ -117,9 +119,9 @@ class Monster:
     font = None
 
     def __init__(self):
-        self.x, self.y = 750,150
+        self.x, self.y = random.randint(650, 1500) ,150
         self.hp = 50
-        self.defend = 90
+        self.defend = 40
         self.att = 20
         self.Pdamage_count = 100
         self.frame = 0
@@ -130,8 +132,10 @@ class Monster:
             self.font = load_font('ENCR10B.TTF', 20)
 
     def __del__(self):
-        self.x = 850
-        self.__init__()
+        global Mon_death_count
+        self.x = 5000
+        self.hp = 9999999
+        Mon_death_count += 1
 
     def update(self, frame_time, Boy, Bullet):
         self.total_frames += self.FRAMES_PER_ACTION * self.ACTION_PER_TIME * frame_time
@@ -216,23 +220,23 @@ class Statuswindow:
 
 
 def enter():
-    global boy, dog, background, bullet, status_window, icon
+    global boy, dog, background, bullet, status_window, icon, dogs
     boy = Boy()
     background = Background()
     status_window = Statuswindow()
     bullet = Bullet()
-    dog = Monster()
+    dogs = [Monster() for i in range(5)]
     icon = Upgrade_icon()
 
 
 def exit():
-    global boy, background, bullet, status_window, icon, dog
+    global boy, background, bullet, status_window, icon, dogs
     del(boy)
     del(background)
     del(status_window)
     del(bullet)
     del(icon)
-    del(dog)
+    del(dogs)
 
 
 def pause():
@@ -269,16 +273,23 @@ def get_frame_time():
 
 
 def update():
-    global current_time
+    global current_time, Mon_death_count
     frame_time = get_frame_time()
     boy.update(frame_time)
     bullet.update(frame_time, boy)
     background.update()
-    dog.update(frame_time, boy, bullet)
-    if dog.hp <= 0:
-        boy.gold += 200
-        dog.__del__()
-    boy.get_damage(dog)
+
+    for dog in dogs:
+        dog.update(frame_time, boy, bullet)
+        boy.get_damage(dog)
+        if dog.hp <= 0:
+            boy.gold += 200
+            dog.__del__()
+
+    if (Mon_death_count >= 5):
+        for dog in dogs:
+            dog.__init__()
+        Mon_death_count = 0
     # player_damage = (boy.att * 10) / mon.defend
     delay(0.02)
 
@@ -288,6 +299,8 @@ def draw():
     background.draw()
     icon.draw()
     boy.draw()
-    dog.draw()
+    for dog in dogs:
+        dog.draw()
+    print(" Mon_death_count: %d" % Mon_death_count)
     bullet.draw()
     update_canvas()
