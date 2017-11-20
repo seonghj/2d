@@ -90,7 +90,7 @@ class Boy:
                     self.gold_heal = self.gold_heal * 2
 
     def draw(self):
-        self.image.clip_draw(self.frame * 98, 0, 98, 100, self.x, self.y)
+        self.image.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
         self.font.draw(50, 575, 'HP: %0.2f' % self.hp, (255, 0, 0))
         self.font.draw(50, 545, 'ATT: %0.2f' % self.att, (125, 0, 0))
         self.font.draw(250, 575, 'DEF: %0.2f' % self.defend, (0, 0, 255))
