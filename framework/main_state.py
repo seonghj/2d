@@ -17,6 +17,7 @@ icon = None
 dogs = None
 Mon_death_count = 0
 background_width = 1000
+Stage = 1
 
 mouse_x, mouse_y = 0, 0
 
@@ -29,11 +30,11 @@ class Boy:
 
     font = None
     Reach = 400
-    att, defend, max_hp, heal = 20, 10, 100, 1
+    att, defend, max_hp, heal = 20, 10, 100, 0.25
     hp = max_hp
-    gold = 10000
+    gold = 400
 
-    upgrade_att, upgrade_def, upgrade_hp, upgrade_heal = 10, 4, 50, 1
+    upgrade_att, upgrade_def, upgrade_hp, upgrade_heal = 10, 4, 50, 0.25
     gold_att, gold_def, gold_hp, gold_heal = 100, 100, 100, 100
 
     TIME_PER_ACTION = 0.5
@@ -44,6 +45,7 @@ class Boy:
         self.x, self.y = Player_x, 150
         self.frame = 0
         self.image = load_image('Cuphead_animation.png')
+        self.image_dead = load_image('Died.jpg')
         self.dir = 1
         self.total_frames = 0.0
         if self.font == None:
@@ -99,13 +101,16 @@ class Boy:
 
     def draw(self):
         self.image.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
+        if self.hp < 0:
+            self.image_dead.clip_draw(0, 0, 560, 120, 400, 300)
         self.font.draw(50, 575, 'HP: %0.2f' % self.hp, (255, 0, 0))
         self.font.draw(50, 545, 'ATT: %0.2f' % self.att, (125, 0, 0))
         self.font.draw(250, 575, 'DEF: %0.2f' % self.defend, (0, 0, 255))
         self.font.draw(250, 545, 'RES: %0.2f' % self.heal, (255, 0, 100))
-        self.font.draw(650, 575, 'GOLD: %d' % self.gold, (255, 100, 0))
+        self.font.draw(650, 575, 'GOLD: %d' % self.gold, (150, 100, 0))
 
 class Monster:
+    global Stage
     PIXEL_PER_METER = (10.0 / 0.1)  # 10 pixel 10 cm
     RUN_SPEED_KMPH = 20.0  # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -119,10 +124,10 @@ class Monster:
     font = None
 
     def __init__(self):
-        self.x, self.y = random.randint(650, 1500) ,150
-        self.hp = 50
-        self.defend = 40
-        self.att = 20
+        self.x, self.y = random.randint(650, 2000) ,150
+        self.hp = 50 + (25 * (Stage - 1))
+        self.defend = 20 + ((Stage - 1) * 5)
+        self.att = 20 + ((Stage - 1) * 3)
         self.Pdamage_count = 100
         self.frame = 0
         self.image = load_image('Dog.png')
@@ -148,6 +153,7 @@ class Monster:
     def draw(self):
         self.image.clip_draw(self.frame * 80, 0, 80, 75, self.x, self.y)
         self.font.draw(self.x, self.y + 50, 'HP: %0.2f' % self.hp, (255, 0, 0))
+        self.font.draw(650, 525, 'STAGE: %d' % Stage, (255, 255, 255))
 
 
 class Bullet:
@@ -273,23 +279,24 @@ def get_frame_time():
 
 
 def update():
-    global current_time, Mon_death_count
+    global current_time, Mon_death_count, Stage
     frame_time = get_frame_time()
-    boy.update(frame_time)
-    bullet.update(frame_time, boy)
-    background.update()
+    if boy.hp > 0:
+        boy.update(frame_time)
+        bullet.update(frame_time, boy)
+        background.update()
 
-    for dog in dogs:
-        dog.update(frame_time, boy, bullet)
-        boy.get_damage(dog)
-        if dog.hp <= 0:
-            boy.gold += 200
-            dog.__del__()
-
-    if (Mon_death_count >= 5):
         for dog in dogs:
-            dog.__init__()
-        Mon_death_count = 0
+            dog.update(frame_time, boy, bullet)
+            boy.get_damage(dog)
+            if dog.hp <= 0:
+                boy.gold += 200
+                dog.__del__()
+                if (Mon_death_count >= 5):
+                    Stage += 1
+                    for dog in dogs:
+                        dog.__init__()
+                    Mon_death_count = 0
     # player_damage = (boy.att * 10) / mon.defend
     delay(0.02)
 
