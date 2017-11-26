@@ -107,7 +107,7 @@ class Boy:
         self.font.draw(50, 545, 'ATT: %0.2f' % self.att, (125, 0, 0))
         self.font.draw(250, 575, 'DEF: %0.2f' % self.defend, (0, 0, 255))
         self.font.draw(250, 545, 'RES: %0.2f' % self.heal, (255, 0, 100))
-        self.font.draw(650, 575, 'GOLD: %d' % self.gold, (150, 100, 0))
+        self.font.draw(600, 575, 'GOLD: %d' % self.gold, (150, 100, 0))
 
 class Monster:
     global Stage
@@ -153,7 +153,7 @@ class Monster:
     def draw(self):
         self.image.clip_draw(self.frame * 80, 0, 80, 75, self.x, self.y)
         self.font.draw(self.x, self.y + 50, 'HP: %0.2f' % self.hp, (255, 0, 0))
-        self.font.draw(650, 525, 'STAGE: %d' % Stage, (255, 255, 255))
+        self.font.draw(600, 525, 'STAGE: %d' % Stage, (255, 255, 255))
 
 
 class Bullet:
@@ -290,7 +290,7 @@ def update():
             dog.update(frame_time, boy, bullet)
             boy.get_damage(dog)
             if dog.hp <= 0:
-                boy.gold += 200
+                boy.gold += 200 * (1.2*(Stage - 1))
                 dog.__del__()
                 if (Mon_death_count >= 5):
                     Stage += 1
