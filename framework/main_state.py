@@ -200,10 +200,13 @@ class Upgrade_icon:
 
 
 class Background:
+    global Stage
     def __init__(self):
         self.x1, self.x2 = 0, background_width
         self.image1 = load_image('background.png')
-        self.image2 = load_image('background.png')
+        self.image2 = load_image('background2.png')
+        self.image3 = load_image('background3.png')
+        self.image4 = load_image('background4.png')
 
     def update(self):
         self.x1 -= 4
@@ -214,8 +217,18 @@ class Background:
             self.x2 = background_width
 
     def draw(self):
-        self.image1.draw(self.x1 + (background_width/ 2), 250)
-        self.image1.draw(self.x2 + (background_width / 2), 250)
+        if Stage % 4 == 0:
+            self.image1.draw(self.x1 + (background_width/ 2), 250)
+            self.image1.draw(self.x2 + (background_width / 2), 250)
+        elif Stage % 4 == 1:
+            self.image2.draw(self.x1 + (background_width/ 2), 250)
+            self.image2.draw(self.x2 + (background_width / 2), 250)
+        elif Stage % 4 == 2:
+            self.image3.draw(self.x1 + (background_width/ 2), 250)
+            self.image3.draw(self.x2 + (background_width / 2), 250)
+        elif Stage % 4 == 3:
+            self.image4.draw(self.x1 + (background_width/ 2), 250)
+            self.image4.draw(self.x2 + (background_width / 2), 250)
 
 class Statuswindow:
     def __init__(self):
