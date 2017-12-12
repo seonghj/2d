@@ -99,9 +99,15 @@ class Bullet:
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-    def __init__(self):
+    def __init__(self, boy):
         self.x, self.y = Player_x + 50, 140
-        self.image = load_image('bullet.png')
+        self.type = 2
+        if self.type == 1:
+            self.damage = boy.att
+            self.image = load_image('bullet.png')
+        elif self.type == 2:
+            self.damage = boy.att * 1.5
+            self.image = load_image('bullet2.png')
 
     def update(self, frame_time, Boy):
         distance = Bullet.RUN_SPEED_PPS * frame_time

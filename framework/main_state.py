@@ -96,7 +96,7 @@ def enter():
     boy = Boy()
     background = Background()
     status_window = Statuswindow()
-    bullet = Bullet()
+    bullet = Bullet(boy)
     dogs = [Monster(Stage) for i in range(6)]
     icon = Upgrade_icon()
 
