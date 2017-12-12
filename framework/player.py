@@ -13,10 +13,10 @@ class Boy:
     font = None
     att, defend, max_hp, heal = 20, 10, 100, 0.25
     hp = max_hp
-    gold = 2000
+    gold = 400
 
-    upgrade_att, upgrade_def, upgrade_hp, upgrade_heal = 40, 4, 50, 0.25
-    gold_att, gold_def, gold_hp, gold_heal = 100, 100, 100, 100
+    upgrade_att, upgrade_def, upgrade_hp, upgrade_heal = 10, 4, 50, 0.25
+    gold_att, gold_def, gold_hp, gold_heal = 100, 100, 200, 100
 
     TIME_PER_ACTION = 0.5
     ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -100,21 +100,21 @@ class Bullet:
 
     def __init__(self, boy):
         self.x, self.y = Player_x + 50, 140
-        self.type = 3
+        self.type = 1
         self.frame = 0
+        self.count = 0
+        self.image1 = load_image('bullet.png')
+        self.image2 = load_image('bullet2.png')
+        self.image3 = load_image('bullet3.png')
         if self.type == 1:
             self.damage = boy.att
             self.Reach = 400
-            self.image = load_image('bullet.png')
         elif self.type == 2:
             self.damage = boy.att * 1.5
             self.Reach = 600
-            self.image = load_image('bullet2.png')
         elif self.type == 3:
-            self.count = 0
             self.damage = boy.att * 0.5
             self.Reach = 400
-            self.image = load_image('bullet3.png')
 
     def update(self, frame_time, boy):
         distance = Bullet.RUN_SPEED_PPS * frame_time
@@ -129,7 +129,7 @@ class Bullet:
         if self.type == 1 or self.type == 2:
             self.x += distance
             if self.x > (Player_x + self.Reach):
-                self.x = Player_x + 75
+                self.x = Player_x + 50
         elif self.type == 3:
             self.count += 1
             self.x =  Player_x + 80
@@ -139,8 +139,8 @@ class Bullet:
 
     def draw(self):
         if self.type == 1:
-            self.image.clip_draw(0, 0, 75, 75, self.x, self.y)
+            self.image1.clip_draw(0, 0, 75, 75, self.x, self.y)
         if self.type == 2:
-            self.image.clip_draw(0, 0, 214, 96, self.x, self.y)
+            self.image2.clip_draw(0, 0, 214, 96, self.x, self.y)
         if self.type == 3:
-            self.image.clip_draw(500 * self.frame, 0, 500, 50, self.x + 150 , self.y)
+            self.image3.clip_draw(500 * self.frame, 0, 500, 50, self.x + 150 , self.y)

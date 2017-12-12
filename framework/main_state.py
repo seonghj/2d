@@ -90,16 +90,16 @@ class Background:
             self.x2 = background_width
 
     def draw(self):
-        if Stage % 4 == 0:
+        if Stage % 20 <= 4 and Stage % 20 >= 0:
             self.image1.draw(self.x1 + (background_width/ 2), 250)
             self.image1.draw(self.x2 + (background_width / 2), 250)
-        elif Stage % 4 == 1:
+        elif Stage % 20 <= 9 and Stage % 20 >= 5:
             self.image2.draw(self.x1 + (background_width/ 2), 250)
             self.image2.draw(self.x2 + (background_width / 2), 250)
-        elif Stage % 4 == 2:
+        elif Stage % 20 <= 14 and Stage % 20 >= 10:
             self.image3.draw(self.x1 + (background_width/ 2), 250)
             self.image3.draw(self.x2 + (background_width / 2), 250)
-        elif Stage % 4 == 3:
+        elif Stage % 20 <= 19 and Stage % 20 >= 15:
             self.image4.draw(self.x1 + (background_width/ 2), 250)
             self.image4.draw(self.x2 + (background_width / 2), 250)
         self.font.draw(600, 525, 'STAGE: %d' % Stage, (255, 255, 255))
@@ -187,6 +187,7 @@ def update():
             if boss_dog.hp <= 0:
                 boy.gold += 500 * (1.2 * (Stage - 1))
                 boss_dog.__del__()
+                bullet.type = random.randint(2, 3)
                 Mon_death_count += 1
         else:
             Mon_number = 5
