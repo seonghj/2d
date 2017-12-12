@@ -66,9 +66,9 @@ class Boss_Monster:
 
     def __init__(self, Stage):
         self.x, self.y = 2000 ,150
-        self.hp = 500 + (250 * (Stage - 1))
+        self.hp = 500 + (150 * (Stage - 1))
         self.defend = 50 + ((Stage - 1) * 5)
-        self.att = 40 + ((Stage - 1) * 20)
+        self.att = 20 + ((Stage - 1) * 20)
         self.Pdamage_count = 1006
         self.frame = 0
         self.image = load_image('Dog_boss.png')

@@ -197,7 +197,7 @@ def update():
             dog.update(frame_time, boy, bullet)
             boy.get_damage(dog)
             if dog.hp <= 0:
-                boy.gold += 300 * (1.2*(Stage-1))
+                boy.gold += 100 * (1.2*(Stage-1))
                 dog.__del__()
                 Mon_death_count += 1
         if (Mon_death_count >= Mon_number):

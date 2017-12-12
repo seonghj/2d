@@ -43,7 +43,7 @@ class Boy:
 
     def get_damage(self, Monster):
         Monster.Pdamage_count += 1
-        if (Monster.x - 75 <= self.x) and Monster.Pdamage_count >= 50:
+        if (Monster.x - 75 <= self.x) and Monster.Pdamage_count >= 30:
             self.hp -= (Monster.att * 10) /self.defend
             Monster.Pdamage_count = 0
 
