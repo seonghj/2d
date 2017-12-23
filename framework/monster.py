@@ -21,7 +21,7 @@ class Monster:
         self.att = 20 + ((Stage - 1) * 3)
         self.Pdamage_count = 100
         self.frame = 0
-        self.image = load_image('Dog.png')
+        self.image = load_image('image/Dog.png')
         self.dir = 1
         self.total_frames = 0.0
         if self.font == None:
@@ -71,7 +71,7 @@ class Boss_Monster:
         self.att = 20 + ((Stage - 1) * 20)
         self.Pdamage_count = 1006
         self.frame = 0
-        self.image = load_image('Dog_boss.png')
+        self.image = load_image('image/Dog_boss.png')
         self.dir = 1
         self.total_frames = 0.0
         if self.font == None:

@@ -34,13 +34,13 @@ class Upgrade_icon:
 
     def __init__(self):
         self.x1, self.y1 = 100, 50
-        self.image1 = load_image('icon_att_up.png')
+        self.image1 = load_image('image/icon_att_up.png')
         self.x2, self.y2 = 200, 50
-        self.image2 = load_image('icon_hp_up.png')
+        self.image2 = load_image('image/icon_hp_up.png')
         self.x3, self.y3 = 300, 50
-        self.image3 = load_image('icon_def_up.png')
+        self.image3 = load_image('image/icon_def_up.png')
         self.x4, self.y4 = 400, 50
-        self.image4 = load_image('icon_heal_up.png')
+        self.image4 = load_image('image/icon_heal_up.png')
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 16)
 
@@ -56,9 +56,9 @@ class Weapon_icon:
     def __init__(self):
         self.x = 700
         self.y = 50
-        self.image1 = load_image('bullet.png')
-        self.image2 = load_image('bullet2_icon.png')
-        self.image3 = load_image('bullet3_icon.png')
+        self.image1 = load_image('image/bullet.png')
+        self.image2 = load_image('image/bullet2_icon.png')
+        self.image3 = load_image('image/bullet3_icon.png')
 
     def draw(self, Bullet):
         if Bullet.type == 1:
@@ -74,10 +74,10 @@ class Background:
     font = None
     def __init__(self):
         self.x1, self.x2 = 0, background_width
-        self.image1 = load_image('background.png')
-        self.image2 = load_image('background2.png')
-        self.image3 = load_image('background3.png')
-        self.image4 = load_image('background4.png')
+        self.image1 = load_image('image/background.png')
+        self.image2 = load_image('image/background2.png')
+        self.image3 = load_image('image/background3.png')
+        self.image4 = load_image('image/background4.png')
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 20)
 
@@ -106,7 +106,7 @@ class Background:
 
 class Statuswindow:
     def __init__(self):
-        self.image = load_image('status_window.png')
+        self.image = load_image('image/status_window.png')
 
     def draw(self):
         self.image.draw(400, 300)
@@ -126,14 +126,16 @@ def enter():
 
 
 def exit():
-    global boy, background, bullet, status_window, icon, dogs, boss_dog
+    global boy, background, bullet, status_window, upgrade_icon, weapon_icon, dogs, boss_dog, Mon_death_count
     del(boy)
     del(background)
     del(status_window)
     del(bullet)
     del(upgrade_icon)
+    del(weapon_icon)
     del(dogs)
     del(boss_dog)
+    Mon_death_count = 0
 
 
 def pause():
@@ -149,6 +151,7 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
+            exit()
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)

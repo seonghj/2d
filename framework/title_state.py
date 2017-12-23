@@ -10,7 +10,7 @@ running = True
 
 def enter():
     global image
-    image = load_image('title.png')
+    image = load_image('image/title.png')
 
 
 def exit():

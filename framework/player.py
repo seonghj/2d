@@ -25,9 +25,13 @@ class Boy:
     def __init__(self):
         self.x, self.y = Player_x, 150
         self.frame = 0
-        self.image = load_image('Cuphead_animation.png')
-        self.image_dead = load_image('Died.jpg')
+        self.image = load_image('image/Cuphead_animation.png')
+        self.image_damaged = load_image('image/Cuphead_damage.png')
+        self.image_dead = load_image('image/Died.jpg')
+        self.image_dead2 = load_image('image/cuphead_dead.png')
         self.dir = 1
+        self.isalive = True
+        self.getdamage = False
         self.total_frames = 0.0
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 20)
@@ -44,9 +48,11 @@ class Boy:
     def get_damage(self, Monster):
         Monster.Pdamage_count += 1
         if (Monster.x - 75 <= self.x) and Monster.Pdamage_count >= 30:
+            self.getdamage = True
             self.hp -= (Monster.att * 10) /self.defend
             Monster.Pdamage_count = 0
-
+        elif self.frame == 7:
+            self.getdamage = False
 
 
 
@@ -81,9 +87,14 @@ class Boy:
                     self.gold_heal = self.gold_heal * 2
 
     def draw(self):
-        self.image.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
         if self.hp < 0:
             self.image_dead.clip_draw(0, 0, 560, 120, 400, 300)
+            self.image_dead2.clip_draw((self.frame%3) * 86, 0, 98, 116, self.x, self.y)
+        else:
+            if self.getdamage:
+                self.image_damaged.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
+            else:
+                self.image.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
         self.font.draw(50, 575, 'HP: %0.2f' % self.hp, (255, 0, 0))
         self.font.draw(50, 545, 'ATT: %0.2f' % self.att, (125, 0, 0))
         self.font.draw(250, 575, 'DEF: %0.2f' % self.defend, (0, 0, 255))
@@ -103,9 +114,9 @@ class Bullet:
         self.type = 1
         self.frame = 0
         self.count = 0
-        self.image1 = load_image('bullet.png')
-        self.image2 = load_image('bullet2.png')
-        self.image3 = load_image('bullet3.png')
+        self.image1 = load_image('image/bullet.png')
+        self.image2 = load_image('image/bullet2.png')
+        self.image3 = load_image('image/bullet3.png')
         if self.type == 1:
             self.damage = boy.att
             self.Reach = 400
