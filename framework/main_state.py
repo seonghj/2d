@@ -25,30 +25,35 @@ background_width = 1000
 Stage = 1
 Mon_number = 5
 
+Pause = False
 mouse_x, mouse_y = 0, 0
-
+button_sound = None
 
 class Upgrade_icon:
     global mouse_x, mouse_y
     font = None
 
     def __init__(self):
-        self.x1, self.y1 = 100, 50
+        self.x1, self.y1 = 100, 65
         self.image1 = load_image('image/icon_att_up.png')
-        self.x2, self.y2 = 200, 50
+        self.x2, self.y2 = 200, 65
         self.image2 = load_image('image/icon_hp_up.png')
-        self.x3, self.y3 = 300, 50
+        self.x3, self.y3 = 300, 65
         self.image3 = load_image('image/icon_def_up.png')
-        self.x4, self.y4 = 400, 50
+        self.x4, self.y4 = 400, 65
         self.image4 = load_image('image/icon_heal_up.png')
         if self.font == None:
-            self.font = load_font('ENCR10B.TTF', 16)
+            self.font = load_font('ENCR10B.TTF', 14)
 
     def draw(self):
         self.image1.clip_draw(0, 0, 60, 60, self.x1, self.y1)
         self.image2.clip_draw(0, 0, 60, 60, self.x2, self.y2)
         self.image3.clip_draw(0, 0, 60, 60, self.x3, self.y3)
         self.image4.clip_draw(0, 0, 60, 60, self.x4, self.y4)
+        self.font.draw(80, 20, '%d' % boy.gold_att, (255, 255, 255))
+        self.font.draw(180, 20, '%d' % boy.gold_hp, (255, 255, 255))
+        self.font.draw(280, 20, '%d' % boy.gold_def, (255, 255, 255))
+        self.font.draw(380, 20, '%d' % boy.gold_heal, (255, 255, 255))
 
 class Weapon_icon:
     font = None
@@ -56,11 +61,13 @@ class Weapon_icon:
     def __init__(self):
         self.x = 700
         self.y = 50
+        self.image = load_image('image/white.png')
         self.image1 = load_image('image/bullet.png')
         self.image2 = load_image('image/bullet2_icon.png')
         self.image3 = load_image('image/bullet3_icon.png')
 
     def draw(self, Bullet):
+        self.image.clip_draw(0, 0, 75, 75, self.x, self.y)
         if Bullet.type == 1:
             self.image1.clip_draw(0, 0, 75, 75, self.x, self.y)
         elif Bullet.type == 2:
@@ -70,7 +77,7 @@ class Weapon_icon:
 
 
 class Background:
-    global Stage
+    global Stage, Pause
     font = None
     def __init__(self):
         self.x1, self.x2 = 0, background_width
@@ -78,6 +85,7 @@ class Background:
         self.image2 = load_image('image/background2.png')
         self.image3 = load_image('image/background3.png')
         self.image4 = load_image('image/background4.png')
+        self.Pause_image = load_image('image/pause.png')
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 20)
 
@@ -104,6 +112,9 @@ class Background:
             self.image4.draw(self.x2 + (background_width / 2), 250)
         self.font.draw(600, 525, 'STAGE: %d' % Stage, (255, 255, 255))
 
+        if Pause == True:
+            self.Pause_image.clip_draw(0, 0, 300, 300, 400, 300)
+
 class Statuswindow:
     def __init__(self):
         self.image = load_image('image/status_window.png')
@@ -113,7 +124,8 @@ class Statuswindow:
 
 
 def enter():
-    global boy, dog, background, bullet, status_window, upgrade_icon, weapon_icon, dogs, boss_dog
+    global boy, dog, background, bullet, status_window\
+        , upgrade_icon, weapon_icon, dogs, boss_dog, Mon_death_count, Stage, button_sound
     boy = Boy()
     background = Background()
     status_window = Statuswindow()
@@ -122,11 +134,17 @@ def enter():
     upgrade_icon = Upgrade_icon()
     weapon_icon = Weapon_icon()
     boss_dog = Boss_Monster(Stage)
+    Mon_death_count = 0
+    Stage = 1
+    Bullet.type = 1
+    button_sound = load_wav('sound/button_sound.wav')
+    button_sound.set_volume(32)
 
 
 
 def exit():
-    global boy, background, bullet, status_window, upgrade_icon, weapon_icon, dogs, boss_dog, Mon_death_count
+    global boy, background, bullet, status_window\
+        , upgrade_icon, weapon_icon, dogs, boss_dog, Mon_death_count, Stage
     del(boy)
     del(background)
     del(status_window)
@@ -135,7 +153,6 @@ def exit():
     del(weapon_icon)
     del(dogs)
     del(boss_dog)
-    Mon_death_count = 0
 
 
 def pause():
@@ -147,17 +164,46 @@ def resume():
 
 
 def handle_events():
-    global mouse_x, mouse_y
+    global mouse_x, mouse_y, Mon_death_count, Stage, Pause, button_sound
     events = get_events()
     for event in events:
-        if event.type == SDL_QUIT:
-            exit()
-            game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.change_state(title_state)
-        elif event.type == SDL_MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = event.x, 600 - event.y
-            boy.upgrade_update(mouse_x, mouse_y)
+        if boy.isalive:
+            if event.type == SDL_QUIT:
+                exit()
+                game_framework.quit()
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+                if Pause == True:
+                    Pause = False
+                else:
+                    Pause = True
+            elif event.type == SDL_MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.x, 600 - event.y
+                boy.upgrade_update(mouse_x, mouse_y, button_sound)
+                if boy.find_weapon == True:
+                    if mouse_y > 150 and 250 > mouse_y:
+                        if mouse_x < 370 and mouse_x > 270:
+                            bullet.type = boy.find_weapon_type
+                            boy.find_weapon = False
+                            Pause = False
+                            button_sound.play()
+                        elif mouse_x > 430 and mouse_x < 530:
+                            boy.find_weapon = False
+                            Pause = False
+                            button_sound.play()
+
+        elif boy.isalive == False:
+            if event.type == SDL_KEYDOWN and event.key == SDLK_r:
+                for dog in dogs:
+                    dog.__init__(Stage)
+                Mon_death_count = 0
+                if Stage > 3:
+                    Stage -= 3
+                else:
+                    Stage = 1
+                boy.hp = boy.max_hp
+                boy.isalive = True
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+                game_framework.change_state(title_state)
 
 
 current_time = 0.0
@@ -173,10 +219,18 @@ def get_frame_time():
 
 
 def update():
-    global current_time, Mon_death_count, Stage, dogs, Mon_number, boss_dog
+    global current_time, Mon_death_count, Stage, dogs,\
+        Mon_number, boss_dog, Pause
     frame_time = get_frame_time()
 
-    if boy.hp > 0:
+    if boy.hp <= 0:
+        boy.isalive = False
+        boy.hp = 0
+        if boy.hp == 0:
+            boy.death_sound.play(1)
+            boy.hp = 0.001
+
+    if boy.isalive and Pause == False:
         boy.update(frame_time)
         bullet.update(frame_time, boy)
         background.update()
@@ -185,13 +239,23 @@ def update():
             Mon_number = 6
             if boss_dog.x > 3000:
                 boss_dog.__init__(Stage)
-            boss_dog.update(frame_time, boy, bullet)
+            boss_dog.update(frame_time, boy, bullet, Stage)
             boy.get_damage(boss_dog)
             if boss_dog.hp <= 0:
                 boy.gold += 500 * (1.2 * (Stage - 1))
                 boss_dog.__del__()
-                bullet.type = random.randint(2, 3)
                 Mon_death_count += 1
+                boy.find_weapon_type = random.randint(1, 3)
+                if boy.find_weapon_type == 1 and bullet.type != 1:
+                    boy.find_weapon = True
+                    Pause = True
+                elif boy.find_weapon_type == 2 and bullet.type != 2:
+                    boy.find_weapon = True
+                    Pause = True
+                elif boy.find_weapon_type == 3 and bullet.type != 3:
+                    boy.find_weapon = True
+                    Pause = True
+
         else:
             Mon_number = 5
             boss_dog.x = 5000
@@ -219,8 +283,8 @@ def draw():
     weapon_icon.draw(bullet)
     boy.draw()
     for dog in dogs:
-        dog.draw()
-    boss_dog.draw()
+        dog.draw(Stage)
+    boss_dog.draw(Stage)
     print(" Mon_death_count: %d" % Mon_death_count)
-    bullet.draw()
+    bullet.draw(boy)
     update_canvas()
