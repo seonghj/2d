@@ -70,7 +70,7 @@ class Boy:
 
 
     def upgrade_update(self, mouse_x, mouse_y, button_sound):
-        if mouse_y > 35 and mouse_y < 95:
+        if mouse_y > 27 and mouse_y < 87:
             if mouse_x > 70 and mouse_x < 130:
                 button_sound.play()
                 if (self.gold >=  self.gold_att):

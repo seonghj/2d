@@ -34,13 +34,13 @@ class Upgrade_icon:
     font = None
 
     def __init__(self):
-        self.x1, self.y1 = 100, 65
+        self.x1, self.y1 = 100, 57
         self.image1 = load_image('image/icon_att_up.png')
-        self.x2, self.y2 = 200, 65
+        self.x2, self.y2 = 200, 57
         self.image2 = load_image('image/icon_hp_up.png')
-        self.x3, self.y3 = 300, 65
+        self.x3, self.y3 = 300, 57
         self.image3 = load_image('image/icon_def_up.png')
-        self.x4, self.y4 = 400, 65
+        self.x4, self.y4 = 400, 57
         self.image4 = load_image('image/icon_heal_up.png')
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 14)
@@ -50,10 +50,10 @@ class Upgrade_icon:
         self.image2.clip_draw(0, 0, 60, 60, self.x2, self.y2)
         self.image3.clip_draw(0, 0, 60, 60, self.x3, self.y3)
         self.image4.clip_draw(0, 0, 60, 60, self.x4, self.y4)
-        self.font.draw(80, 20, '%d' % boy.gold_att, (255, 255, 255))
-        self.font.draw(180, 20, '%d' % boy.gold_hp, (255, 255, 255))
-        self.font.draw(280, 20, '%d' % boy.gold_def, (255, 255, 255))
-        self.font.draw(380, 20, '%d' % boy.gold_heal, (255, 255, 255))
+        self.font.draw(80, 17, '%d' % boy.gold_att, (255, 255, 255))
+        self.font.draw(180, 17, '%d' % boy.gold_hp, (255, 255, 255))
+        self.font.draw(280, 17, '%d' % boy.gold_def, (255, 255, 255))
+        self.font.draw(380, 17, '%d' % boy.gold_heal, (255, 255, 255))
 
 class Weapon_icon:
     font = None
@@ -81,7 +81,7 @@ class Background:
     font = None
     def __init__(self):
         self.x1, self.x2 = 0, background_width
-        self.image1 = load_image('image/background.png')
+        self.image1 = load_image('image/background1.png')
         self.image2 = load_image('image/background2.png')
         self.image3 = load_image('image/background3.png')
         self.image4 = load_image('image/background4.png')
