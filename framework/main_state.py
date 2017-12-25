@@ -289,6 +289,5 @@ def draw():
     for dog in dogs:
         dog.draw(Stage)
     boss_dog.draw(Stage)
-    print(" Mon_death_count: %d" % Mon_death_count)
     bullet.draw(boy)
     update_canvas()
