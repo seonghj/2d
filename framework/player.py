@@ -22,19 +22,19 @@ class Boy:
         self.frame = 0
 
         self.image = load_image('image/Cuphead_animation.png')
-        self.image_damaged = load_image('image/Cuphead_damage.png')
+        self.image2 = load_image('image/stand_animation.png')
         self.image_gameover = load_image('image/gameover.png')
+        self.image_damaged = load_image('image/damaged_animation.png')
         self.image_dead2 = load_image('image/cuphead_dead.png')
         self.bullet1_icon = load_image('image/bullet.png')
         self.bullet2_icon = load_image('image/bullet2_icon.png')
         self.bullet3_icon = load_image('image/bullet3_icon.png')
         self.find_weapon_window = load_image('image/change_weapon.png')
-
         self.death_sound = load_wav('sound/death.wav')
         self.death_sound.set_volume(100)
         self.damage_sound = load_wav('sound/damage.wav')
         self.damage_sound.set_volume(100)
-
+        self.isrunning = True
         self.dir = 1
         self.upgrade_att, self.upgrade_def, self.upgrade_hp, self.upgrade_heal = 10, 0.5, 50, 0.5
         self.gold_att, self.gold_def, self.gold_hp, self.gold_heal = 100, 100, 200, 100
@@ -63,8 +63,9 @@ class Boy:
             self.damage_sound.play()
             self.getdamage = True
             self.hp -= (Monster.att * 10) /self.defend
+            self.isrunning = False
             Monster.Pdamage_count = 0
-        elif self.frame == 7:
+        elif self.frame == 3:
             self.getdamage = False
 
 
@@ -109,8 +110,11 @@ class Boy:
             self.image_gameover.clip_draw(0, 0, 295, 295, 400, 300)
             self.image_dead2.clip_draw(80, 0, 90, 116, self.x, self.y)
         else:
-            if self.getdamage:
-                self.image_damaged.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
+            if self.isrunning == False:
+                if self.getdamage == True:
+                    self.image_damaged.clip_draw((self.frame%4)* 88, 0, 88, 100, self.x, self.y - 5)
+                else:
+                    self.image2.clip_draw((self.frame%2)* 90, 0, 90, 100, self.x, self.y - 5)
             else:
                 self.image.clip_draw(15 + self.frame * 100, 0, 98, 100, self.x, self.y)
 

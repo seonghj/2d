@@ -89,9 +89,10 @@ class Background:
         if self.font == None:
             self.font = load_font('ENCR10B.TTF', 20)
 
-    def update(self):
-        self.x1 -= 4
-        self.x2 -= 4
+    def update(self, boy):
+        if boy.isrunning == True:
+            self.x1 -= 4
+            self.x2 -= 4
         if self.x1 <= -background_width:
             self.x1 = background_width
         if self.x2 <= -background_width:
@@ -202,6 +203,7 @@ def handle_events():
                     Stage = 1
                 boy.hp = boy.max_hp
                 boy.isalive = True
+                boy.isrunning = True
             elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.change_state(title_state)
 
@@ -233,7 +235,7 @@ def update():
     if boy.isalive and Pause == False:
         boy.update(frame_time)
         bullet.update(frame_time, boy)
-        background.update()
+        background.update(boy)
 
         if Stage % 5 == 0:
             Mon_number = 6
@@ -243,6 +245,7 @@ def update():
             boy.get_damage(boss_dog)
             if boss_dog.hp <= 0:
                 boy.gold += 500 * (1.2 * (Stage - 1))
+                boy.isrunning = True
                 boss_dog.__del__()
                 Mon_death_count += 1
                 boy.find_weapon_type = random.randint(1, 3)
@@ -264,6 +267,7 @@ def update():
             dog.update(frame_time, boy, bullet)
             boy.get_damage(dog)
             if dog.hp <= 0:
+                boy.isrunning = True
                 boy.gold += 100 * (1.2*(Stage-1))
                 dog.__del__()
                 Mon_death_count += 1
