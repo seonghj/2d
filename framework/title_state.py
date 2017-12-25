@@ -12,11 +12,15 @@ running = True
 
 mouse_x, mouse_y = 0, 0
 
+main_music = None
+
 def enter():
-    global image, help_image
+    global image, help_image, main_music
     image = load_image('image/title.png')
     help_image = load_image('image/help.png')
-
+    main_music = load_music('sound/main_music.mp3')
+    main_music.set_volume(100)
+    main_music.play()
 
 def exit():
     global image, help_image

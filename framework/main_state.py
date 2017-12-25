@@ -248,7 +248,7 @@ def update():
                 boy.isrunning = True
                 boss_dog.__del__()
                 Mon_death_count += 1
-                boy.find_weapon_type = random.randint(1, 3)
+                boy.find_weapon_type = random.randint(1, 4)
                 if boy.find_weapon_type == 1 and bullet.type != 1:
                     boy.find_weapon = True
                     Pause = True
