@@ -5,7 +5,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{03E2812C-07C5-47EA-8A30-59951BE3BB46}
+AppId={{11ED8FB9-5932-4ECF-8968-5CFCC313735B}
 AppName=Cuphead_run
 AppVersion=1.5
 ;AppVerName=Cuphead_run 1.5
@@ -16,7 +16,7 @@ AppUpdatesURL=http://www.example.com/
 DefaultDirName={pf}\Cuphead_run
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Han seong-jae\Desktop
-OutputBaseFilename=Cuphead_run_setup
+OutputBaseFilename=Cuphead_setup
 Compression=lzma
 SolidCompression=yes
 

@@ -16,21 +16,13 @@
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\stringprep.py',
    'PYMODULE'),
-  ('stat',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\stat.py',
-   'PYMODULE'),
-  ('genericpath',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\genericpath.py',
-   'PYMODULE'),
-  ('posixpath',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\posixpath.py',
-   'PYMODULE'),
   ('fnmatch',
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\fnmatch.py',
+   'PYMODULE'),
+  ('struct',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\struct.py',
    'PYMODULE'),
   ('_compat_pickle',
    'c:\\users\\han '
@@ -183,6 +175,14 @@
   ('plistlib',
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\plistlib.py',
+   'PYMODULE'),
+  ('token',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\token.py',
+   'PYMODULE'),
+  ('tokenize',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\tokenize.py',
    'PYMODULE'),
   ('urllib.parse',
    'c:\\users\\han '
@@ -456,21 +456,17 @@
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\doctest.py',
    'PYMODULE'),
-  ('pprint',
+  ('stat',
    'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\pprint.py',
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\stat.py',
    'PYMODULE'),
-  ('pickle',
+  ('genericpath',
    'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\pickle.py',
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\genericpath.py',
    'PYMODULE'),
-  ('tracemalloc',
+  ('posixpath',
    'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\tracemalloc.py',
-   'PYMODULE'),
-  ('warnings',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\warnings.py',
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\posixpath.py',
    'PYMODULE'),
   ('enum',
    'c:\\users\\han '
@@ -508,21 +504,9 @@
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\subprocess.py',
    'PYMODULE'),
-  ('token',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\token.py',
-   'PYMODULE'),
-  ('copy',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\copy.py',
-   'PYMODULE'),
   ('textwrap',
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\textwrap.py',
-   'PYMODULE'),
-  ('struct',
-   'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\struct.py',
    'PYMODULE'),
   ('gettext',
    'c:\\users\\han '
@@ -532,9 +516,25 @@
    'c:\\users\\han '
    'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\argparse.py',
    'PYMODULE'),
-  ('tokenize',
+  ('pprint',
    'c:\\users\\han '
-   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\tokenize.py',
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\pprint.py',
+   'PYMODULE'),
+  ('pickle',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\pickle.py',
+   'PYMODULE'),
+  ('tracemalloc',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('warnings',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\warnings.py',
+   'PYMODULE'),
+  ('copy',
+   'c:\\users\\han '
+   'seong-jae\\appdata\\local\\programs\\python\\python36\\lib\\copy.py',
    'PYMODULE'),
   ('start_state',
    'C:\\Users\\Han seong-jae\\Desktop\\2d\\framework\\start_state.py',
